@@ -8,8 +8,17 @@ resource "google_compute_backend_bucket" "main" {
 }
 
 resource "google_compute_url_map" "main" {
-  name            = "${local.name}-urlmap-http"
+  name            = "${local.name}-urlmap"
   default_service = google_compute_backend_bucket.main.id
+}
+
+resource "google_compute_url_map" "http_to_https" {
+  name = "${local.name}-urlmap-http-to-https"
+  default_url_redirect {
+    https_redirect         = true
+    redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
+    strip_query            = false
+  }
 }
 
 resource "google_compute_managed_ssl_certificate" "main" {
@@ -21,7 +30,7 @@ resource "google_compute_managed_ssl_certificate" "main" {
 
 resource "google_compute_target_http_proxy" "main" {
   name    = "${local.name}-http"
-  url_map = google_compute_url_map.main.id
+  url_map = google_compute_url_map.http_to_https.id
 }
 
 resource "google_compute_target_https_proxy" "main" {
