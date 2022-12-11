@@ -24,7 +24,7 @@ resource "google_compute_url_map" "http_to_https" {
 resource "google_compute_managed_ssl_certificate" "main" {
   name = "${local.name}-cert"
   managed {
-    domains = [var.domain]
+    domains = [local.domain]
   }
 }
 
