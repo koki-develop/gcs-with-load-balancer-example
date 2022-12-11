@@ -17,3 +17,9 @@ resource "google_storage_bucket_object" "dummy" {
 
   bucket = google_storage_bucket.main.name
 }
+
+resource "google_storage_bucket_iam_member" "main" {
+  bucket = google_storage_bucket.main.name
+  role   = "roles/storage.objectViewer"
+  member = "allUsers"
+}
