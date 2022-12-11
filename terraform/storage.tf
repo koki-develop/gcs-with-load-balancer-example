@@ -9,3 +9,11 @@ resource "google_storage_bucket" "main" {
   storage_class               = "STANDARD"
   force_destroy               = true
 }
+
+resource "google_storage_bucket_object" "dummy" {
+  name         = "images/dummy.png"
+  source       = "${path.module}/dummy.png"
+  content_type = "image/png"
+
+  bucket = google_storage_bucket.main.name
+}
